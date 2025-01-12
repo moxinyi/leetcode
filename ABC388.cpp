@@ -1,14 +1,16 @@
 // A - ?UPC
-#include <bits/stdc++.h>
-using namespace std;
-int main() {
-  ios::sync_with_stdio(false);
-  cin.tie(nullptr);
+// #include <bits/stdc++.h>
+// using namespace std;
+// int main() {
+//   ios::sync_with_stdio(false);
+//   cin.tie(nullptr);
+//
+//   string s;
+//   cin >> s;
+//   cout << s[0] << "UPC" << '\n';
+// }
 
-  string s;
-  cin >> s;
-  cout << s[0] << "UPC" << '\n';
-}
+
 
 // B - Heavy Snake
 
@@ -59,3 +61,31 @@ int main() {
 //   }
 //   cout << ans << '\n';
 // }
+
+
+
+// E - Simultaneous Kagamimochi
+
+#include <bits/stdc++.h>
+using namespace std;
+using ll = long long;
+
+int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
+  int N;
+  cin >> N;
+  vector<ll> A(N);
+  for (int i = 0; i < N; i++) cin >> A[i];
+
+  ll L = 0, R = N / 2 + 1;
+  while (R - L > 1) {
+    ll M = (L + R) / 2;
+    for (int i = 0; i < M; i++) {
+      if (A[i] * 2 > A[N - M + i]) R = M;
+    }
+    if (R != M) L = M;
+  }
+  cout << L << '\n';
+}
