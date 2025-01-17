@@ -1,66 +1,82 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+// set and then check if the next element exist
+// O(n^2)
+// O(n)
+// class Solution {
+// public:
+//   int longestConsecutive(vector<int>& nums) {
+//     if (nums.size() == 0) return 0;
+//     int res = 0;
+//     unordered_set<int> numSet(nums.begin(), nums.end());
+//
+//     for (int n : nums) {
+//       int length = 1;
+//       while (numSet.find(n + length) != numSet.end()) {
+//         length++;
+//       }
+//       res = max(res, length);
+//     }
+//     return res;
+//   }
+// };
 
-// map and set for each rows and cols and squas.
-// O(n^2)
-// O(n^2)
+
+// sort and check consecutive
+// O(nlogn)
+// O(1)
+// class Solution {
+// public:
+//   int longestConsecutive(vector<int>& nums) {
+//     if (nums.size() == 0) return 0;
+//     sort(nums.begin(), nums.end());
+//     int res = 0;
+//
+//     for (int i = 0; i < nums.size(); i++) {
+//       int length = 1;
+//       while (i + 1 < nums.size() && (nums[i + 1] - nums[i] == 1)) {
+//         i++;
+//         length++;
+//         while (i + 1 < nums.size() && nums[i + 1] == nums[i]) i++;
+//       }
+//       res = max(res, length);
+//     }
+//     return res;
+//   }
+// };
+
+
+// set and then only check if n is the start of a sequence by checking n - 1 exist or not.
+// O(n)
+// O(n)
 class Solution {
 public:
-  bool isValidSudoku(vector<vector<char>>& board) {
-    unordered_map<int, unordered_set<char>> rows, cols;
-    map<pair<int, int>, unordered_set<char>> squas;
+  int longestConsecutive(vector<int>& nums) {
+    if (nums.size() == 0) return 0;
+    int res = 0;
+    unordered_set<int> numSet(nums.begin(), nums.end());
 
-    for (int r = 0; r < 9; r++) {
-      for (int c = 0; c < 9; c++) {
-        char m = board[r][c];
-        if (m == '.') continue;
-
-        pair<int, int> squaKey = {r / 3, c / 3};
-
-        if (rows[r].count(m) || cols[c].count(m) || squas[squaKey].count(m)) {
-          return false;
+    for (int n : numSet) {
+      if (numSet.find(n - 1) == numSet.end()) {
+        int length = 1;
+        while (numSet.find(n + length) != numSet.end()) {
+          length++;
         }
-
-        rows[r].insert(m);
-        cols[c].insert(m);
-        squas[squaKey].insert(m);
+        res = max(res, length);
       }
     }
-    return true;
+    return res;
   }
 };
-
 
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-  vector<vector<char>> board = {
-    {'5', '3', '.', '.', '7', '.', '.', '.', '.'},
-    {'6', '.', '.', '1', '9', '5', '.', '.', '.'},
-    {'.', '9', '8', '.', '.', '.', '.', '6', '.'},
-    {'8', '.', '.', '.', '6', '.', '.', '.', '3'},
-    {'4', '.', '.', '8', '.', '3', '.', '.', '1'},
-    {'7', '.', '.', '.', '2', '.', '.', '.', '6'},
-    {'.', '6', '.', '.', '.', '.', '2', '8', '.'},
-    {'.', '.', '.', '4', '1', '9', '.', '.', '5'},
-    {'.', '.', '.', '.', '8', '.', '.', '7', '9'}
-  };
-
-  // vector<vector<char>> board = {
-  //   {'8', '3', '.', '.', '7', '.', '.', '.', '.'},
-  //   {'6', '.', '.', '1', '9', '5', '.', '.', '.'},
-  //   {'.', '9', '8', '.', '.', '.', '.', '6', '.'},
-  //   {'8', '.', '.', '.', '6', '.', '.', '.', '3'},
-  //   {'4', '.', '.', '8', '.', '3', '.', '.', '1'},
-  //   {'7', '.', '.', '.', '2', '.', '.', '.', '6'},
-  //   {'.', '6', '.', '.', '.', '.', '2', '8', '.'},
-  //   {'.', '.', '.', '4', '1', '9', '.', '.', '5'},
-  //   {'.', '.', '.', '.', '8', '.', '.', '7', '9'}
-  // };
+  // vector<int> nums = {1, 2, 4, 3, 100, 200};
+  vector<int> nums = {0, 2, 1, 3, 4, 5, 7, 6, 8, 9};
 
   Solution solution;
-  cout << solution.isValidSudoku(board) << endl;
-
+  cout << solution.longestConsecutive(nums) << endl;
 }
